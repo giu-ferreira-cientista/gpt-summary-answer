@@ -8,7 +8,7 @@ const openai = new OpenAIApi(configuration);
 
 const getSummary = async (content) => {
     const completion = await openai.createChatCompletion({
-        model: "gpt-4",
+        model: "gpt-3.5-turbo",
         messages: [
             { role: "system", content: "Você é um especialista em resumo de texto. Responda em português" },
             { role: "user", content }
@@ -20,7 +20,7 @@ const getSummary = async (content) => {
 
 const getAnswer = async (content, question) => {
     const completion = await openai.createChatCompletion({
-        model: "gpt-4",
+        model: "gpt-3.5-turbo",
         messages: [
             { role: "system", content: "Você é um especialista que sabe responder perguntas com base no texto. Responda em português" },
             { role: "assistant", content: `Com base no texto: "${content}". Responda as perguntas.` },
