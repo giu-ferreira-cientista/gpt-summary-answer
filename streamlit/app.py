@@ -15,9 +15,9 @@ def get_data(url, question):
     print(course_json)
     return course_json
 
-st.title('Assistente do Curso')
+st.title('Stack Academy - Assistente de Cursos')
 st.markdown("## Consulta")
-question = st.text_input("O que deseja Saber?", "Do que se trata esse curso?")
+question = st.text_input("O que deseja saber?", "Do que se trata esse curso?")
 if st.button("Run"):        
     with st.spinner('Mágica em andamento...'):
         answer = get_data(url=SITE_URL, question=question)
