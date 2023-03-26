@@ -41,6 +41,11 @@ Siga as instruções sobre como configurar o projeto localmente.
    npm start
    ```
 
+### Rodar o Streamlit App
+   ```sh
+   cd streamlit   
+   streamlit run app.py
+   ```
 ### Como utilizar
 
 O projeto estará rodando em http://localhost:8080. Temos os seguintes recursos GET disponíveis na API:
