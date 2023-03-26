@@ -24,14 +24,14 @@ app.get('/summary', async (request, response) => {
     const { url } = request.query;
     const content = await getContent(url)
     const summary = await OpenAiService.getSummary(content);
-    response.send(`<strong>Conteúdo:</strong> ${content} <br></br><strong>Resumo:</strong> ${summary} <br><br><strong>Referência:</strong> ${url}`)
+    response.send(`${summary}`)
 });
 
 app.get('/answer', async (request, response) => {
     const { url, question } = request.query;
     const content = await getContent(url)
     const answer = await OpenAiService.getAnswer(content, question);
-    response.send(`<strong>Pergunta:</strong> ${question} <br></br><strong>Resposta:</strong> ${answer} <br><br><strong>Referência:</strong> ${url}`)
+    response.send(`${answer}`)
 });
 
 app.listen(PORT, () => {

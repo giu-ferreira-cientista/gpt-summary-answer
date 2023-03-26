@@ -2,42 +2,29 @@ import streamlit as st
 from requests_html import HTMLSession
 import matplotlib.pyplot as plt
 import pandas as pd
+import time
+
+SITE_URL = "https://dbd.puc-rio.br/TecnicasAvancadasNLP.html"
+API_URL = "https://8080-giuferreira-gptsummarya-kxk348b5zkl.ws-us92.gitpod.io"
 
 sess = HTMLSession()
         
-def get_data(in_name, in_country = None):
-    if in_country and in_country != '':
-        gender_url = f"https://api.genderize.io?name={in_name}&country_id={in_country}"
-        age_url = f"https://api.agify.io?name={in_name}&country_id={in_country}"
-    else:
-        gender_url = f"https://api.genderize.io?name={in_name}"
-        age_url = f"https://api.agify.io?name={in_name}"
-    gender_json = sess.get(gender_url).json()
-    age_json = sess.get(age_url).json()
-    return gender_json, age_json
+def get_data(url, question):    
+    api_url = f"{API_URL}/answer?url={url}&question={question}"
+    course_json = sess.get(api_url).text
+    print(course_json)
+    return course_json
 
-def return_pie_values(in_gender_data):
-    if in_gender_data['gender'] == 'male':
-        return [in_gender_data['probability'], 1 - in_gender_data['probability']]
-    else:
-        return [1 - in_gender_data['probability'], in_gender_data['probability']]
-        
-st.title('Name Analyzer')
-st.markdown("## Search")
-name = st.text_input("Name", "Andrea")
-country = st.text_input("Country")
-if st.button("Run"):
-    gender, age = get_data(name, country)
-    st.markdown("## Results Age")
-    st.metric("Predicted Age", value = age['age'])
-    st.metric("Count", value = age['count'])
+st.title('Assistente do Curso')
+st.markdown("## Consulta")
+question = st.text_input("O que deseja Saber?", "Do que se trata esse curso?")
+if st.button("Run"):        
+    with st.spinner('Mágica em andamento...'):
+        answer = get_data(url=SITE_URL, question=question)
+    st.markdown("## Resposta")
     st.markdown("---")
-    st.markdown("## Results Gender")
-    df = pd.DataFrame({"category":["M","F"], "value":return_pie_values(gender)})
-    fig, ax = plt.subplots()
-    # change background color to transparent
-    fig.patch.set_facecolor('none')
-    ax.pie(df['value'], labels = df['category'], autopct='%1.1f%%', colors = ['blue', 'fuchsia'], textprops={'color':"w"})
-    st.pyplot(fig)
-    st.metric("Count", gender['count'])
-    st.markdown("---")
+    text = answer
+    t = st.empty()
+    for i in range(len(text) + 1):
+        t.markdown("## %s" % text[0:i])
+        time.sleep(0.06)
